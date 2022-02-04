@@ -83,53 +83,10 @@ $ curl -H "Authorization: bearer token" -X POST -d " \
 
 ## クエリの例
 あるオーナー(someone)のあるリポジトリ(somerepo)に対し、 main ブランチの2022-01-22以降のコミットを取得するクエリ。
-```
-query($refPrefix:String!) {
-  repository(name: "somerepo", owner: "someone") {
-    name
-    refs(refPrefix: $refPrefix, query:"main", first: 2) {
-      edges {
-        cursor
-        node {
-          name
-          prefix
-          target {
-            ... on Commit {
-              id
-              history(since: "2022-01-22T11:35:50-05:00") {
-                totalCount
-                pageInfo {
-                  endCursor
-                  startCursor
-                }
-                edges {
-                  cursor
-                  node {
-                    oid
-                    messageHeadline
-                    changedFiles
-                    committedDate
-                    author {
-                      name
-                      email
-                      date
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-ブランチの数変わらないからこうでもいい
+refs を ref として、特定のブランチに指定する書き方。
 ```
 query($branchName:String!) {
-  repository(name: "runner", owner: "mercari") {
+  repository(name: "somerepo", owner: "someone") {
     name
     ref(qualifiedName: $branchName) {
       name
